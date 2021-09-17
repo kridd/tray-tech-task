@@ -9,5 +9,5 @@ test.todo('it should submit the selected images for validation', () => {
 });
 test.todo('it should return to Screen 1 when invalid response received', () => {
 });
-test.todo('it should render a success message when a valid response is recieved', () => {
+test.todo('it should render a success message when a valid response is received', () => {
 });

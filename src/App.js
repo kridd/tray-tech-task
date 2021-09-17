@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ImageList } from "./components/ImageList";
 import { Loading } from "./components/Loading";
 import { LOADING, ERRORING, SELECT_SHIPS, ALL_CLEAR } from "./consts";
-import "./mock-server/server"; // Mocked the server as there are CORS issues
+import "./mock-server/server"; // Mocked the server for now, as had CORS issues accessing the API
 
 import "./App.css";
 
@@ -35,17 +35,17 @@ function App() {
         console.warn("Retrying fetch ships");
         fetchData();
         // NOTE: We retry here because we expect there to be intermittent issues
-        // with the server response that clear fairly quickly.
-        // TODO: However, we should look to escape this loop because we don't want
-        // to spam the server if there are genuine issues.
+        // with the server response that clear quickly.
+        // However, we should look to escape this loop because we don't want
+        // to spam the server if there are genuine issues (and get stuck in an infinite loop).
         // I've chosen to take that risk here because we have no way of knowing which it
         // is at the moment, and we don't want to present the user with an error message.
+        // TODO: Add a timeout before retrying, add a threshold of retries before exiting.
       }
     };
 
     fetchData();
   }, []);
-
 
   const selectImages = (url) => {
     if (!selectedImages.includes(url)) {
@@ -66,6 +66,7 @@ function App() {
         .then((response) => response.json())
         .then((data) => data);
       console.log({ valid });
+      // TODO: If the entry is invalid, we should show the user a message to let them know what's happened.
       setStatus(valid ? ALL_CLEAR : SELECT_SHIPS);
     } catch (error) {
       console.error(error);
@@ -86,11 +87,13 @@ function App() {
       {status === SELECT_SHIPS ? (
         <>
           <ImageList
-          imageList={imageList}
+            imageList={imageList}
             selectedImages={selectedImages}
             selectImages={selectImages}
           />
+          {selectedImages.length > 0 && (
             <button onClick={submit}>Continue</button>
+          )}
         </>
       ) : null}
 
