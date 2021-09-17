@@ -1,0 +1,28 @@
+img {
+  max-width: 100%;
+}
+.image-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: auto;
+  max-width: 900px;
+}
+.image-item {
+  appearance: none;
+  background: none;
+  border: none;
+  border-radius: 1rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  line-height: 0;
+  overflow: hidden;
+  padding: 0;
+}
+.image-item:not(.selected):hover {
+  border-color: green;
+}
+
+.selected {
+  border-color: blue;
+}
